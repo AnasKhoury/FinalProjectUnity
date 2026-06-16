@@ -1,0 +1,37 @@
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+.utmp/
+MemoryCaptures/
+Recordings/
+SA Museum AR_BurstDebugInformation_DoNotShip/
+*_BurstDebugInformation_DoNotShip/
+
+# Unity generated files
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Build output
+*.apk
+*.aab
+*.unitypackage
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vs/
+.vscode/

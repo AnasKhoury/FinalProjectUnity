@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MuseumAndroidAR.unity
+    guid: eed5dd8e9cb5af94487ac4baeae1c14e
+  m_configObjects:
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: ebbf2199a0175474185ff3cf8ac81b92, type: 2}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 982194680d9e91a4fbc55f1c1b10e7fd, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 3a67a26571549ca48b36a9a47399599a, type: 2}
+  m_UseUCBPForAssetBundles: 0

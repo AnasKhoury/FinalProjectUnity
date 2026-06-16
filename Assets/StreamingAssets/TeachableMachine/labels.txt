@@ -1,0 +1,9 @@
+0 Pregnant
+1 Rock
+2 Ship
+3 Hands
+4 Mask
+5 3SmallVaz
+6 NormalVaz
+7 BigVaz
+8 EnterancePanel
