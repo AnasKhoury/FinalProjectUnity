@@ -103,5 +103,12 @@ public static class RtlTextFormatter
         return string.Join("\n", lines);
     }
 
-    private static bool IsLtrRunChar(char c) => char.IsLetterOrDigit(c) && !(c >= 0x0590 && c <= 0x08FF);
+    private static bool IsLtrRunChar(char c) => char.IsLetterOrDigit(c) && !IsRtlCharacter(c);
+
+    private static bool IsRtlCharacter(char c)
+    {
+        return (c >= 0x0590 && c <= 0x08FF)
+            || (c >= 0xFB1D && c <= 0xFDFF)
+            || (c >= 0xFE70 && c <= 0xFEFF);
+    }
 }
