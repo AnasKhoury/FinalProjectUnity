@@ -761,6 +761,8 @@ MonoBehaviour:
   audioButtonLabel: {fileID: 0}
   hebrewAudioButton: {fileID: 0}
   hebrewAudioButtonLabel: {fileID: 0}
+  debugButton: {fileID: 0}
+  debugButtonLabel: {fileID: 0}
 --- !u!4 &622847990
 Transform:
   m_ObjectHideFlags: 0
@@ -956,12 +958,17 @@ MonoBehaviour:
   - displayName: DEA GRAVIDA
     referenceImageName: 
     recognitionLabel: Pregnant
-    mobileDescription: Fertility goddess figurine. Recognized from the real museum object.
-    englishExplanationText: DEA GRAVIDA (Fertility Goddess Figurine), Iron Age II (970-530 BCE). A figurine representing a fertility goddess. Most figurines of this type found around the Mediterranean region come from Tel Michal, near Herzliya.
+    mobileDescription: Fertility goddess figurine. Recognized from the real museum
+      object.
+    englishExplanationText: DEA GRAVIDA (Fertility Goddess Figurine), Iron Age II
+      (970-530 BCE). A figurine representing a fertility goddess. Most figurines
+      of this type found around the Mediterranean region come from Tel Michal, near
+      Herzliya.
     prefab: {fileID: -8098169881513260187, guid: 9006fc3c1b5d1fa4c8b52f29e64ad719, type: 3}
     englishAudioClip: {fileID: 8300000, guid: 33e4331dee1dbfc4cb00c9422508d8d3, type: 3}
     hebrewExplanationText: 
     hebrewAudioClip: {fileID: 8300000, guid: 1c2d62d71959b7d48ac6cbb5a979e71f, type: 3}
+    arabicAudioClip: {fileID: 8300000, guid: d9e16df0b2a155d4cb327738c60a513b, type: 3}
     localOffset: {x: 0, y: 0.15, z: 0}
     localEulerAngles: {x: 0, y: 180, z: 0}
     localScale: {x: 1, y: 1, z: 1}
@@ -977,6 +984,7 @@ MonoBehaviour:
     englishAudioClip: {fileID: 8300000, guid: d004ab04ba74a6842b752ef8f52bb896, type: 3}
     hebrewExplanationText: 
     hebrewAudioClip: {fileID: 8300000, guid: 695e6a97616a9234ba08aeaad8f8634e, type: 3}
+    arabicAudioClip: {fileID: 8300000, guid: 048713e94ef5d814fb359e74ce26665d, type: 3}
     localOffset: {x: 0, y: 0.15, z: 0}
     localEulerAngles: {x: 0, y: 180, z: 0}
     localScale: {x: 1, y: 1, z: 1}
@@ -991,18 +999,24 @@ MonoBehaviour:
     englishAudioClip: {fileID: 8300000, guid: b3d99f6a8506b434282b5065aa4e13e4, type: 3}
     hebrewExplanationText: 
     hebrewAudioClip: {fileID: 8300000, guid: b041ae7b19a36f94fa00d066286c16f5, type: 3}
+    arabicAudioClip: {fileID: 8300000, guid: 24006d05bd5c2074d907ba4583aebf6a, type: 3}
     localOffset: {x: 0, y: 0.15, z: 0}
     localEulerAngles: {x: 0, y: 0, z: 0}
     localScale: {x: 1, y: 1, z: 1}
   - displayName: Replica Stone Hand-Shaped Stoppers
     referenceImageName: 
     recognitionLabel: Hands
-    mobileDescription: Stone hand-shaped stoppers. Recognized from the real museum object.
-    englishExplanationText: Replica Stone Hand-Shaped Stoppers, Persian Period (530-332 BCE). These stone objects were carved to resemble hands. They were used as stoppers for liquid containers and also served as tools for distributing and using liquids stored in larger vessels.
+    mobileDescription: Stone hand-shaped stoppers. Recognized from the real museum
+      object.
+    englishExplanationText: Replica Stone Hand-Shaped Stoppers, Persian Period (530-332
+      BCE). These stone objects were carved to resemble hands. They were used as
+      stoppers for liquid containers and also served as tools for distributing and
+      using liquids stored in larger vessels.
     prefab: {fileID: -8098169881513260187, guid: 777269b1ec28e534a819647c9559002c, type: 3}
     englishAudioClip: {fileID: 8300000, guid: da6622b7438ffaf4287a6f43c523b9c2, type: 3}
     hebrewExplanationText: 
     hebrewAudioClip: {fileID: 8300000, guid: d8f2673f5c76ad049898b56a9030f30f, type: 3}
+    arabicAudioClip: {fileID: 8300000, guid: 6c7f098f3fb5ef840b806f2daa0355ff, type: 3}
     localOffset: {x: 0, y: 0.15, z: 0}
     localEulerAngles: {x: 0, y: 0, z: 0}
     localScale: {x: 1, y: 1, z: 1}
@@ -1010,11 +1024,13 @@ MonoBehaviour:
     referenceImageName: 
     recognitionLabel: Mask
     mobileDescription: Replica mask. Recognized from the real museum object.
-    englishExplanationText: Replica Mask, Iron Age (1150-530 BCE). This mask is a replica of a burial offering mask discovered during excavations at Achziv.
+    englishExplanationText: Replica Mask, Iron Age (1150-530 BCE). This mask is a
+      replica of a burial offering mask discovered during excavations at Achziv.
     prefab: {fileID: -8098169881513260187, guid: 6cd52d8df4c793241a88cd93d29b12f7, type: 3}
     englishAudioClip: {fileID: 8300000, guid: 48448213afbe7294a8eb38e0d9ac5fde, type: 3}
     hebrewExplanationText: 
     hebrewAudioClip: {fileID: 8300000, guid: aa2865eb70cadb147906302c2211a226, type: 3}
+    arabicAudioClip: {fileID: 8300000, guid: 35cb09eac966ed5459255bb2ba9c263e, type: 3}
     localOffset: {x: 0, y: 0.15, z: 0}
     localEulerAngles: {x: 0, y: 180, z: 0}
     localScale: {x: 1, y: 1, z: 1}
@@ -1022,11 +1038,14 @@ MonoBehaviour:
     referenceImageName: 
     recognitionLabel: 3SmallVaz
     mobileDescription: Glass vessels. Recognized from the real museum object.
-    englishExplanationText: Glass Vessels, Persian Period (530-332 BCE). The sandy coast around Acre was famous because its sand was considered an excellent raw material for glass production.
+    englishExplanationText: Glass Vessels, Persian Period (530-332 BCE). The sandy
+      coast around Acre was famous because its sand was considered an excellent raw
+      material for glass production.
     prefab: {fileID: -8098169881513260187, guid: f5210d987002e294286c9dada46548c0, type: 3}
     englishAudioClip: {fileID: 8300000, guid: 68292b5f9d893134f91bb3b1d80fe791, type: 3}
     hebrewExplanationText: 
     hebrewAudioClip: {fileID: 8300000, guid: e5b6dd27938851845891a1d8e7ed8ab9, type: 3}
+    arabicAudioClip: {fileID: 8300000, guid: 7106bfd8ff9921145a6773d697a34d08, type: 3}
     localOffset: {x: 0, y: 0.15, z: 0}
     localEulerAngles: {x: 0, y: 0, z: 0}
     localScale: {x: 1, y: 1, z: 1}
@@ -1043,6 +1062,7 @@ MonoBehaviour:
     englishAudioClip: {fileID: 8300000, guid: 8eb1ed0ea65f9414c9260793bb14f5b5, type: 3}
     hebrewExplanationText: 
     hebrewAudioClip: {fileID: 8300000, guid: 3068f32fd6bf2b148b888594aed37d5d, type: 3}
+    arabicAudioClip: {fileID: 8300000, guid: 6d925e99d7fbc514e98cfb5317dd7d39, type: 3}
     localOffset: {x: 0, y: 0.15, z: 0}
     localEulerAngles: {x: 0, y: 0, z: 0}
     localScale: {x: 1, y: 1, z: 1}
@@ -1057,6 +1077,7 @@ MonoBehaviour:
     englishAudioClip: {fileID: 8300000, guid: 2dcc375e9d8541b4287b3faa1698a035, type: 3}
     hebrewExplanationText: 
     hebrewAudioClip: {fileID: 8300000, guid: 838598fa48cd4ad47b26188e3ae39462, type: 3}
+    arabicAudioClip: {fileID: 8300000, guid: 92b89dd132e0e7e4d8a1c865a5c5aa27, type: 3}
     localOffset: {x: 0, y: 0.15, z: 0}
     localEulerAngles: {x: 0, y: 0, z: 0}
     localScale: {x: 1, y: 1, z: 1}
@@ -1064,11 +1085,15 @@ MonoBehaviour:
     referenceImageName: 
     recognitionLabel: EnterancePanel
     mobileDescription: Replica wall relief. Recognized from the real museum object.
-    englishExplanationText: Replica of a Wall Relief, Iron Age (5th Century BCE). This relief is based on a relief discovered in the palace of the Assyrian king Sargon. It depicts trade between Sargon and the king of Tyre, specifically the transport of cedar wood by sea. This event is also described in the Bible.
+    englishExplanationText: Replica of a Wall Relief, Iron Age (5th Century BCE).
+      This relief is based on a relief discovered in the palace of the Assyrian king
+      Sargon. It depicts trade between Sargon and the king of Tyre, specifically
+      the transport of cedar wood by sea. This event is also described in the Bible.
     prefab: {fileID: -8098169881513260187, guid: 413008f5918bae04fb484c27d392519e, type: 3}
     englishAudioClip: {fileID: 8300000, guid: aa0e033a424920343bee335a1662bca3, type: 3}
     hebrewExplanationText: 
     hebrewAudioClip: {fileID: 8300000, guid: 32bb9878745d7e5449631cdbd9f1bac5, type: 3}
+    arabicAudioClip: {fileID: 8300000, guid: fe39b9e31e9afdd4cbe0184c18a8b6d8, type: 3}
     localOffset: {x: 0, y: 0.15, z: 0}
     localEulerAngles: {x: 0, y: 0, z: 0}
     localScale: {x: 1, y: 1, z: 1}

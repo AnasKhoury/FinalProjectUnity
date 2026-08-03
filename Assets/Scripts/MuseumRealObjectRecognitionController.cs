@@ -530,6 +530,11 @@ public sealed class MuseumRealObjectRecognitionController : MonoBehaviour
         return finalRecognitionLocked && activeDefinition != null && activeDefinition.hebrewAudioClip != null;
     }
 
+    public bool HasActiveObjectArabicAudio()
+    {
+        return finalRecognitionLocked && activeDefinition != null && activeDefinition.arabicAudioClip != null;
+    }
+
     public bool IsAudioPlaying()
     {
         return audioSource != null && audioSource.isPlaying;
@@ -543,6 +548,11 @@ public sealed class MuseumRealObjectRecognitionController : MonoBehaviour
     public void ToggleActiveObjectHebrewAudio()
     {
         ToggleActiveObjectAudioClip(activeDefinition != null ? activeDefinition.hebrewAudioClip : null, "Hebrew");
+    }
+
+    public void ToggleActiveObjectArabicAudio()
+    {
+        ToggleActiveObjectAudioClip(activeDefinition != null ? activeDefinition.arabicAudioClip : null, "Arabic");
     }
 
     private void ToggleActiveObjectAudioClip(AudioClip clip, string languageName)

@@ -19,6 +19,8 @@ using UnityEngine.XR.ARFoundation;
 public static class MuseumAndroidProjectSetup
 {
     private const string ScenePath = "Assets/Scenes/MuseumAndroidAR.unity";
+    private const string ApkPath = "Builds/MuseumAR.apk";
+    private const string BuildRequestPath = "Builds/build-apk.request";
     private const string ARCoreLoaderTypeName = "UnityEngine.XR.ARCore.ARCoreLoader";
     private const string AutoPrepareSessionKey = "SA_MUSEUM_ANDROID_AR_AUTO_PREPARED";
     private const string TeachableMachineAssetFolder = "Assets/ML/TeachableMachine";
@@ -49,6 +51,116 @@ public static class MuseumAndroidProjectSetup
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
         Debug.Log("Museum Android AR project initialized for Teachable Machine real-object recognition. Add model.tflite and labels.txt to Assets/ML/TeachableMachine, then assign four mobile prefabs.");
+    }
+
+    // Command-line entry point used to produce a directly installable test APK.
+    public static void BuildAndroidApk()
+    {
+        ConfigureAndroidPlayer();
+        ConfigureAndroidXR();
+        ConfigureTeachableMachineAssets();
+        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
+
+        string outputDirectory = Path.GetDirectoryName(ApkPath);
+        if (!string.IsNullOrEmpty(outputDirectory))
+        {
+            Directory.CreateDirectory(outputDirectory);
+        }
+
+        BuildPlayerOptions options = new()
+        {
+            scenes = new[] { ScenePath },
+            locationPathName = ApkPath,
+            target = BuildTarget.Android,
+            options = BuildOptions.None
+        };
+
+        var report = BuildPipeline.BuildPlayer(options);
+        if (report.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
+        {
+            throw new BuildFailedException($"Android APK build failed: {report.summary.result}");
+        }
+
+        Debug.Log($"Android APK created at {Path.GetFullPath(ApkPath)}");
+    }
+
+    // Assigns Arabic recordings that have been supplied so far without building an APK.
+    public static void ConfigureArabicAudioAssets()
+    {
+        AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+        Scene scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+        MuseumRealObjectRecognitionController controller = UnityEngine.Object.FindAnyObjectByType<MuseumRealObjectRecognitionController>();
+        if (controller == null)
+        {
+            throw new MissingReferenceException("Museum recognition controller was not found in the scene.");
+        }
+
+        SerializedObject serializedController = new(controller);
+        SerializedProperty objects = serializedController.FindProperty("museumObjects");
+        string[,] suppliedClips =
+        {
+            { "BigVaz", "BigVaz_Arabic.mp3" },
+            { "Mask", "Mask_Arabic.mp3" },
+            { "Ship", "Ship_Arabic.mp3" },
+            { "3SmallVaz", "GlassVessels_Arabic.mp3" },
+            { "Hands", "Hands_Arabic.mp3" },
+            { "NormalVaz", "NormalVaz_Arabic.mp3" },
+            { "Pregnant", "DEAGRAVIDA_Arabic.mp3" },
+            { "Rock", "Rock_Arabic.mp3" },
+            { "EnterancePanel", "EnterancePanel_Arabic.mp3" }
+        };
+
+        int assignedCount = 0;
+        for (int clipIndex = 0; clipIndex < suppliedClips.GetLength(0); clipIndex++)
+        {
+            string recognitionLabel = suppliedClips[clipIndex, 0];
+            string fileName = suppliedClips[clipIndex, 1];
+            AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>($"{SoundFolder}/{fileName}");
+            if (clip == null)
+            {
+                continue;
+            }
+
+            for (int i = 0; i < objects.arraySize; i++)
+            {
+                SerializedProperty entry = objects.GetArrayElementAtIndex(i);
+                if (entry.FindPropertyRelative("recognitionLabel").stringValue != recognitionLabel)
+                {
+                    continue;
+                }
+
+                entry.FindPropertyRelative("arabicAudioClip").objectReferenceValue = clip;
+                assignedCount++;
+                break;
+            }
+        }
+
+        if (assignedCount == 0)
+        {
+            throw new FileNotFoundException("No supplied Arabic MP3 files could be imported and assigned.");
+        }
+
+        serializedController.ApplyModifiedPropertiesWithoutUndo();
+        EditorUtility.SetDirty(controller);
+        EditorSceneManager.MarkSceneDirty(scene);
+        EditorSceneManager.SaveScene(scene);
+        AssetDatabase.SaveAssets();
+        Debug.Log($"Assigned {assignedCount} supplied Arabic audio clip(s). No APK was built.");
+    }
+
+    [InitializeOnLoadMethod]
+    private static void ProcessOneTimeApkBuildRequest()
+    {
+        if (!File.Exists(BuildRequestPath))
+        {
+            return;
+        }
+
+        EditorApplication.delayCall += () =>
+        {
+            File.Delete(BuildRequestPath);
+            BuildAndroidApk();
+        };
     }
 
     [InitializeOnLoadMethod]
@@ -441,7 +553,7 @@ public static class MuseumAndroidProjectSetup
         Text description = descriptionText.GetComponent<Text>();
         description.horizontalOverflow = HorizontalWrapMode.Wrap;
         description.verticalOverflow = VerticalWrapMode.Truncate;
-        description.fontSize = 24;
+        description.fontSize = 48;
         description.lineSpacing = 0.92f;
         SetRect(descriptionText, new Vector2(36f, -362f), new Vector2(-36f, -606f));
 
@@ -453,12 +565,8 @@ public static class MuseumAndroidProjectSetup
         interactionRect.sizeDelta = new Vector2(0f, 160f);
         interactionRect.anchoredPosition = new Vector2(0f, 18f);
 
-        Button toggleButton = CreateButton(interactionPanel.transform, "Toggle Object Button", "Show/Hide", new Vector2(35f, 78f), new Vector2(245f, 146f));
-        Button resetButton = CreateButton(interactionPanel.transform, "Reset Button", "Reset", new Vector2(265f, 78f), new Vector2(425f, 146f));
-        Button rotateLeftButton = CreateButton(interactionPanel.transform, "Rotate Left Button", "<", new Vector2(445f, 78f), new Vector2(555f, 146f));
-        Button rotateRightButton = CreateButton(interactionPanel.transform, "Rotate Right Button", ">", new Vector2(575f, 78f), new Vector2(685f, 146f));
-        Button scaleDownButton = CreateButton(interactionPanel.transform, "Scale Down Button", "-", new Vector2(705f, 78f), new Vector2(815f, 146f));
-        Button scaleUpButton = CreateButton(interactionPanel.transform, "Scale Up Button", "+", new Vector2(835f, 78f), new Vector2(945f, 146f));
+        Button toggleButton = CreateButton(interactionPanel.transform, "Toggle Object Button", "Show/Hide", new Vector2(35f, 68f), new Vector2(285f, 146f));
+        Button resetButton = CreateButton(interactionPanel.transform, "Reset Button", "Reset", new Vector2(305f, 68f), new Vector2(495f, 146f));
 
         GameObject uiControllerObject = new("Mobile UI Controller");
         MuseumMobileUIController uiController = uiControllerObject.AddComponent<MuseumMobileUIController>();
@@ -472,10 +580,6 @@ public static class MuseumAndroidProjectSetup
         serializedUi.FindProperty("interactionPanel").objectReferenceValue = interactionPanel;
         serializedUi.FindProperty("toggleButton").objectReferenceValue = toggleButton;
         serializedUi.FindProperty("resetButton").objectReferenceValue = resetButton;
-        serializedUi.FindProperty("rotateLeftButton").objectReferenceValue = rotateLeftButton;
-        serializedUi.FindProperty("rotateRightButton").objectReferenceValue = rotateRightButton;
-        serializedUi.FindProperty("scaleDownButton").objectReferenceValue = scaleDownButton;
-        serializedUi.FindProperty("scaleUpButton").objectReferenceValue = scaleUpButton;
         serializedUi.ApplyModifiedPropertiesWithoutUndo();
     }
 
