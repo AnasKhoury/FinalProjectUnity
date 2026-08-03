@@ -247,6 +247,7 @@ public sealed class MuseumMobileUIController : MonoBehaviour
         hebrewAudioButton.gameObject.SetActive(false);
         objectDescriptionText.gameObject.SetActive(true);
         Canvas.ForceUpdateCanvases();
+        UpdateDescriptionContentSize();
         if (descriptionScrollRect != null)
         {
             descriptionScrollRect.verticalNormalizedPosition = 1f;
@@ -323,7 +324,7 @@ public sealed class MuseumMobileUIController : MonoBehaviour
         }
 
         Transform originalParent = objectDescriptionText.transform.parent;
-        GameObject viewportObject = new("Explanation Scroll Area", typeof(RectTransform), typeof(RectMask2D), typeof(ScrollRect));
+        GameObject viewportObject = new("Explanation Scroll Area", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Mask), typeof(ScrollRect));
         viewportObject.transform.SetParent(originalParent, false);
         RectTransform viewportRect = viewportObject.GetComponent<RectTransform>();
         viewportRect.anchorMin = new Vector2(0f, 0f);
@@ -334,6 +335,11 @@ public sealed class MuseumMobileUIController : MonoBehaviour
         viewportRect.offsetMin = new Vector2(36f, 300f);
         viewportRect.offsetMax = new Vector2(-36f, 650f);
 
+        Image viewportImage = viewportObject.GetComponent<Image>();
+        viewportImage.color = new Color(0f, 0f, 0f, 0.001f);
+        Mask viewportMask = viewportObject.GetComponent<Mask>();
+        viewportMask.showMaskGraphic = false;
+
         objectDescriptionText.transform.SetParent(viewportObject.transform, false);
         RectTransform rect = objectDescriptionText.GetComponent<RectTransform>();
         rect.anchorMin = new Vector2(0f, 1f);
@@ -341,14 +347,7 @@ public sealed class MuseumMobileUIController : MonoBehaviour
         rect.pivot = new Vector2(0.5f, 1f);
         rect.anchoredPosition = Vector2.zero;
         rect.sizeDelta = Vector2.zero;
-
-        ContentSizeFitter fitter = objectDescriptionText.GetComponent<ContentSizeFitter>();
-        if (fitter == null)
-        {
-            fitter = objectDescriptionText.gameObject.AddComponent<ContentSizeFitter>();
-        }
-        fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
-        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        objectDescriptionText.maskable = true;
 
         descriptionScrollRect = viewportObject.GetComponent<ScrollRect>();
         descriptionScrollRect.viewport = viewportRect;
@@ -376,6 +375,20 @@ public sealed class MuseumMobileUIController : MonoBehaviour
         objectDescriptionText.fontSize = 48;
         objectDescriptionText.lineSpacing = 0.92f;
         objectDescriptionText.color = Color.white;
+    }
+
+    private void UpdateDescriptionContentSize()
+    {
+        if (descriptionScrollRect == null || objectDescriptionText == null)
+        {
+            return;
+        }
+
+        RectTransform contentRect = objectDescriptionText.rectTransform;
+        float viewportHeight = descriptionScrollRect.viewport.rect.height;
+        float contentHeight = Mathf.Max(viewportHeight, objectDescriptionText.preferredHeight + 12f);
+        contentRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, contentHeight);
+        contentRect.anchoredPosition = Vector2.zero;
     }
 
     private void RemoveLegacyTransformButtons()
