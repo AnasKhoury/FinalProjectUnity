@@ -329,8 +329,10 @@ public sealed class MuseumMobileUIController : MonoBehaviour
         viewportRect.anchorMin = new Vector2(0f, 0f);
         viewportRect.anchorMax = new Vector2(1f, 0f);
         viewportRect.pivot = new Vector2(0.5f, 0f);
-        viewportRect.offsetMin = new Vector2(36f, 310f);
-        viewportRect.offsetMax = new Vector2(-36f, 620f);
+        // Keep the explanation strictly between the upper debug/gallery controls
+        // and the lower object action row.
+        viewportRect.offsetMin = new Vector2(36f, 300f);
+        viewportRect.offsetMax = new Vector2(-36f, 650f);
 
         objectDescriptionText.transform.SetParent(viewportObject.transform, false);
         RectTransform rect = objectDescriptionText.GetComponent<RectTransform>();
@@ -356,6 +358,17 @@ public sealed class MuseumMobileUIController : MonoBehaviour
         descriptionScrollRect.movementType = ScrollRect.MovementType.Clamped;
         descriptionScrollRect.scrollSensitivity = 45f;
         descriptionScrollRect.inertia = true;
+
+        // The scroll area must never render over interactive controls.
+        viewportObject.transform.SetAsFirstSibling();
+        if (interactionPanel != null)
+        {
+            interactionPanel.transform.SetAsLastSibling();
+        }
+        if (debugButton != null)
+        {
+            debugButton.transform.SetAsLastSibling();
+        }
 
         objectDescriptionText.alignment = TextAnchor.UpperLeft;
         objectDescriptionText.horizontalOverflow = HorizontalWrapMode.Wrap;
