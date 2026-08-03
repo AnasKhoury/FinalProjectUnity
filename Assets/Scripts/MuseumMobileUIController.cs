@@ -324,7 +324,7 @@ public sealed class MuseumMobileUIController : MonoBehaviour
         }
 
         Transform originalParent = objectDescriptionText.transform.parent;
-        GameObject viewportObject = new("Explanation Scroll Area", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Mask), typeof(ScrollRect));
+        GameObject viewportObject = new("Explanation Scroll Area", typeof(RectTransform), typeof(RectMask2D), typeof(ScrollRect));
         viewportObject.transform.SetParent(originalParent, false);
         RectTransform viewportRect = viewportObject.GetComponent<RectTransform>();
         viewportRect.anchorMin = new Vector2(0f, 0f);
@@ -332,13 +332,15 @@ public sealed class MuseumMobileUIController : MonoBehaviour
         viewportRect.pivot = new Vector2(0.5f, 0f);
         // Keep the explanation strictly between the upper debug/gallery controls
         // and the lower object action row.
-        viewportRect.offsetMin = new Vector2(36f, 300f);
-        viewportRect.offsetMax = new Vector2(-36f, 650f);
+        // Dedicated band inside the lower panel: above the three action buttons
+        // and below the Show Information button.
+        viewportRect.offsetMin = new Vector2(36f, 280f);
+        viewportRect.offsetMax = new Vector2(-36f, 520f);
 
-        Image viewportImage = viewportObject.GetComponent<Image>();
-        viewportImage.color = new Color(0f, 0f, 0f, 0.001f);
-        Mask viewportMask = viewportObject.GetComponent<Mask>();
-        viewportMask.showMaskGraphic = false;
+        // RectMask2D performs geometry clipping without relying on the stencil
+        // buffer, so text cannot leak over controls on Android devices.
+        RectMask2D viewportMask = viewportObject.GetComponent<RectMask2D>();
+        viewportMask.padding = Vector4.zero;
 
         objectDescriptionText.transform.SetParent(viewportObject.transform, false);
         RectTransform rect = objectDescriptionText.GetComponent<RectTransform>();
@@ -369,11 +371,14 @@ public sealed class MuseumMobileUIController : MonoBehaviour
             debugButton.transform.SetAsLastSibling();
         }
 
-        objectDescriptionText.alignment = TextAnchor.UpperLeft;
+        objectDescriptionText.alignment = TextAnchor.MiddleCenter;
         objectDescriptionText.horizontalOverflow = HorizontalWrapMode.Wrap;
-        objectDescriptionText.verticalOverflow = VerticalWrapMode.Overflow;
-        objectDescriptionText.fontSize = 48;
-        objectDescriptionText.lineSpacing = 0.92f;
+        objectDescriptionText.verticalOverflow = VerticalWrapMode.Truncate;
+        objectDescriptionText.resizeTextForBestFit = true;
+        objectDescriptionText.resizeTextMinSize = 24;
+        objectDescriptionText.resizeTextMaxSize = 44;
+        objectDescriptionText.fontSize = 44;
+        objectDescriptionText.lineSpacing = 0.9f;
         objectDescriptionText.color = Color.white;
     }
 
@@ -386,8 +391,9 @@ public sealed class MuseumMobileUIController : MonoBehaviour
 
         RectTransform contentRect = objectDescriptionText.rectTransform;
         float viewportHeight = descriptionScrollRect.viewport.rect.height;
-        float contentHeight = Mathf.Max(viewportHeight, objectDescriptionText.preferredHeight + 12f);
-        contentRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, contentHeight);
+        // Keep the text geometry inside the safe band. Unity Text Best Fit
+        // chooses the largest font that fits this exact rectangle.
+        contentRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, viewportHeight);
         contentRect.anchoredPosition = Vector2.zero;
     }
 
