@@ -34,6 +34,9 @@ public sealed class MuseumObjectDefinition
     [Tooltip("Hebrew audio explanation played from the mobile Hebrew audio button.")]
     public AudioClip hebrewAudioClip;
 
+    [Tooltip("Arabic audio explanation played when Arabic is selected.")]
+    public AudioClip arabicAudioClip;
+
     [Tooltip("Local offset from the tracked image or anchor.")]
     public Vector3 localOffset = new Vector3(0f, 0.15f, 0f);
 
